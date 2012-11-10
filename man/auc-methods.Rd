@@ -50,7 +50,7 @@ performance(prediction(labels=ht01.twoclass$observed
                        )
             , measure = "auc")
 }
-message(" == == ht01 result:")
+message(" == == HandTill2001 result:")
 auc(bincap(
 	    response = as.factor(ht01.twoclass$observed)
 	    , predicted = ht01.twoclass$predicted

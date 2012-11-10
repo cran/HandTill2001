@@ -1,4 +1,4 @@
-16f94bd105900cdeeace7d6fea33c495 *DESCRIPTION
+29e8bbe7c415e20de8b2c50c11b8c80f *DESCRIPTION
 f37093a743d3437149981219a05ee9c6 *NAMESPACE
 c5068850b6c23c7c1707a11d607350bb *R/AllClasses.R
 add8f6b47d473759f9c3cfb4f6333048 *R/AllConstructors.R
@@ -9,9 +9,9 @@ c62343d9b04f74be0d6291f3bbe1bc54 *data/ht01.multipleclass.txt.gz
 c157d72517d0efcc2c2f2e4aaebfa428 *demo/00Index
 3086f118d40a96d41b851285400ff9ca *demo/auc.R
 ad9cd317deccf9be5ae22d10bbcaa22e *inst/doc/consensus_auc.Rnw
-b1e7d07ec0052db8ba1e790cbe6d8736 *inst/doc/consensus_auc.pdf
-9f82a03bad631a46d8eb61922bd61dfd *man/HandTill2001-package.Rd
-d791fea77ba5f4fe12ffb01fd3ef2c5b *man/auc-methods.Rd
+0afee8ea8dec91c815de08d17a56eb73 *inst/doc/consensus_auc.pdf
+ca550e779aa2b9ce1542be4b61224818 *man/HandTill2001-package.Rd
+c883e047c62f23e7125984728a3fdfa7 *man/auc-methods.Rd
 4eab299781c1c5bb99f0e83c0f3eec40 *man/bincap-class.Rd
 5a909f96994d6dcfe79e63fa56c4d5db *man/bincap.Rd
 190dc1f85bcf868af99758cc11f9f0c5 *man/cap-class.Rd
