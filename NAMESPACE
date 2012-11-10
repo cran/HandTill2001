@@ -1,0 +1,9 @@
+exportPattern("^[[:alpha:]]+")
+exportMethods(
+    "auc" 
+)
+exportClasses(
+    "bincap",
+     "cap",
+     "multcap" 
+)
