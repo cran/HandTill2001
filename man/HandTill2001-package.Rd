@@ -1,6 +1,6 @@
-\name{ht01-package}
-\alias{ht01-package}
-\alias{ht01}
+\name{HandTill2001-package}
+\alias{HandTill2001-package}
+\alias{HandTill2001}
 \docType{package}
 \title{
 Multiple Class Area under ROC Curve
