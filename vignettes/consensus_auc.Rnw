@@ -21,7 +21,7 @@ We will follow the modelling process shown in \cite[Figure 1]{marmion2009} restr
 <<echo=false,print=false>>=
 options(useFancyQuotes="UTF-8")
 @
-After loading the data, we add random indices for training and evaluation sets (since the training and evaluation sets are complements with respect to the data set, two indices are redundant, but \rcode{subset(fgl, ind.eval)} might be easier to read than \rcode{subset(fgl, !ind.train)}).
+After loading the data, we create random indices for training and evaluation sets (since the training and evaluation sets are complements with respect to the data set, two indices are redundant, but \rcode{fgl[ind.eval, ]} might be easier to read than \rcode{fgl[!ind.train,  ]}).
 <<echo=true>>=
 library(MASS)
 data(fgl)
@@ -31,15 +31,13 @@ ind.train <- sample(nrow(fgl)
                    , replace = FALSE
                    )
 ind.eval <- setdiff(seq(1:nrow(fgl)), ind.train)
-fgl$ind.eval <- FALSE; fgl$ind.eval[ind.eval] <- TRUE
-fgl$ind.train <- FALSE; fgl$ind.train[ind.train] <- TRUE
 @
-Choosing \rcode{fgl\$type} as response and all other variables as predictors, we calibrate a classification tree using \rcode{rpart::rpart} (cf. \cite[p. 264]{MASS}): 
+Choosing \rcode{fgl\$type} as response and all other variables as predictors, we calibrate a classification tree using \rcode{rpart::rpart} (cf. \cite[p. 264]{MASS}):
 <<echo=true>>=
 library(rpart)
 set.seed(123)
 fgl.rpart <- rpart(type ~ .
-                 , data = subset(fgl, ind.train)
+                 , data = fgl[ind.train, ]
                  , parms = list(split = "information")
                  )
 
@@ -54,38 +52,38 @@ and a multinomial log-linear model using \rcode{nnet::multinom}:
 <<echo=true>>=
 library(nnet)
 fgl.multinom <- multinom(type ~ .
-                            , data = subset(fgl, ind.train)
+                            , data = fgl[ind.train, ]
 			    , trace = FALSE
                             )
 @
 We can now assess the model accuracy using either a confusion matrix of the classified predictions
 <<echo=true>>=
 library(mda)
-confusion(subset(fgl, ind.eval)$type
-	  , predict(fgl.rpart.pruned
-		    , newdata = subset(fgl, ind.eval)
-		    , type = "class"))
-confusion(subset(fgl, ind.eval)$type
-	  , predict(fgl.multinom
-		    , newdata = subset(fgl, ind.eval)
-		    , type = "class"))
+confusion(predict(fgl.rpart.pruned
+		    , newdata = fgl[ind.eval, ]
+		    , type = "class")
+          ,fgl[ind.eval, ]$type)
+confusion(predict(fgl.multinom
+		    , newdata = fgl[ind.eval, ]
+		    , type = "class") 
+	  , fgl[ind.eval, ]$type)
 @
 or a multiple class version of AUC using the raw predictions:
 <<echo=true>>=
 library(HandTill2001)
-auc(multcap(response = subset(fgl, ind.eval)$type
+auc(multcap(response = fgl[ind.eval, ]$type
 	     , predicted = predict(fgl.rpart.pruned
-				   , newdata = subset(fgl, ind.eval))
+				   , newdata = fgl[ind.eval, ])
 	     ))
 
-auc(multcap(response = subset(fgl, ind.eval)$type
+auc(multcap(response = fgl[ind.eval, ]$type
 	     , predicted = predict(fgl.multinom
-				   , newdata = subset(fgl, ind.eval)
+				   , newdata = fgl[ind.eval, ]
 				   , type = "probs"
 				   )
 	     ))
 @
-To enhance predictive performance, we decide to use both models to build a consenus model. 
+To enhance predictive performance, we decide to use both models to build a consenus model.
 Furthermore, we want to use the 'weighted average' consensus method given by \cite[Eqn 1]{marmion2009}, which uses the pre-evaluated AUC of the models as weights.
 So we split the training set into two complementary subsets: 'inner training' and 'inner evaluation'.
 <<echo=true>>=
@@ -95,17 +93,15 @@ ind.inner.train <- sample(ind.train
                          , replace = FALSE
                          )
 ind.inner.eval <- setdiff(ind.train, ind.inner.train)
-fgl$ind.inner.eval <- FALSE; fgl$ind.inner.eval[ind.inner.eval] <- TRUE
-fgl$ind.inner.train <- FALSE; fgl$ind.inner.train[ind.inner.train] <- TRUE
 @
 We then refit our two models to the 'inner training' data:
 <<echo=true>>=
 wa.fgl.multinom <- multinom(fgl.multinom
-                            , data = subset(fgl, ind.inner.train)
+                            , data = fgl[ind.inner.train, ]
 			    , trace = FALSE
                             )
 wa.fgl.rpart <- rpart(type ~ .
-                     , data = subset(fgl, ind.inner.train)
+                     , data = fgl[ind.inner.train, ]
                      , parms = list(split = "information")
                      )
 newcp <- max(wa.fgl.rpart$cptable[,"CP"] *
@@ -118,22 +114,20 @@ wa.fgl.rpart.pruned <- prune(wa.fgl.rpart, cp = newcp)
 and calculate pre-evaluation AUC (which we save in a \rcode{list}) using the 'inner evaluation' data and the refitted models:
 <<echo=true>>=
 li <- list()
-li$rpart$auc <- auc(multcap(response = subset(fgl, ind.inner.eval)$type
+li$rpart$auc <- auc(multcap(response = fgl[ind.inner.eval, ]$type
                              , predicted = predict(wa.fgl.rpart.pruned
-                                 , newdata = subset(fgl
-                                     , ind.inner.eval))))
-li$mllm$auc <- auc(multcap(response = subset(fgl, ind.inner.eval)$type
+                                 , newdata = fgl[ind.inner.eval, ])))
+li$mllm$auc <- auc(multcap(response = fgl[ind.inner.eval, ]$type
                             , predicted = predict(wa.fgl.multinom
-                                , newdata = subset(fgl
-                                    , ind.inner.eval)
+                                , newdata = fgl[ind.inner.eval, ]
                                 , type = "probs")))
 @
 We add the predictions using the models (the 'original' or 'Single' ones, not the refitted) for the evaluation set
 <<echo=true>>=
 li$rpart$predictions <- predict(fgl.rpart.pruned
-                                , newdata = subset(fgl, ind.eval))
+                                , newdata = fgl[ind.eval, ])
 li$mllm$predictions <- predict(fgl.multinom
-                               , newdata = subset(fgl, ind.eval)
+                               , newdata = fgl[ind.eval, ]
                                , type = "probs")
 @
 and obtain the consensus predictions as (\cite[Eqn 1]{marmion2009})
@@ -144,9 +138,21 @@ predicted <- Reduce('+', lapply(li, function(x)
 @
 which perform (slightly) better than the predictions using the 'single models':
 <<echo=true>>=
-auc(multcap(response= subset(fgl, ind.eval)$type
+auc(multcap(response= fgl[ind.eval, ]$type
              , predicted = predicted)
      )
 @
+To classify the predicted probabilities, we choose the class with highest predicted probability (which.max gives the \_first\_ maximum):
+<<echo=true>>=
+classes.predicted <-
+  factor(x =
+         apply(predicted
+               , 1
+               , function(x)
+               dimnames(predicted)[[2]][which.max(x)])
+         , dimnames(predicted)[[2]]
+         )
+@
+
 \bibliography{bibliography}
 \end{document}

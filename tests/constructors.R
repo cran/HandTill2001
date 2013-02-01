@@ -56,3 +56,38 @@ assertError(
                 , true = 1
                 )
             )
+
+### Prediction matrix has a column that doesn't correspond to any of the levels of
+### the factor of observed values. This can happen when predicting a subset of the
+### observed values used for building a model.
+df.sub <- (subset(ht01.multipleclass, observed != "Tabl"))
+p <- df.sub[, ! names(df.sub)  %in%  c("observed")]
+r <- df.sub[, c("observed")]
+str(p)
+str(r)
+new("multcap"
+    , response = r
+    , predicted = as.matrix(p)
+    )
+### There is a level in the factor of observed values that does not correspond to
+### any of the columns in the prediction matrix. This is an error although it may
+### happen, for example when building a model using nnet::multinom with a level
+### in the factor of observed values that occures only once.
+p <- ht01.multipleclass[, ! names(ht01.multipleclass)  %in%  c("Con","observed")]
+set.seed(123)
+r <- ht01.multipleclass[sample(nrow(ht01.multipleclass),
+                               size = nrow(p)
+                               , replace = FALSE)
+                        , c("observed")]
+str(p)
+str(r)
+assertError(
+            new("multcap"
+                , response = r
+                , predicted = as.matrix(p)
+    )
+)
+
+
+
+

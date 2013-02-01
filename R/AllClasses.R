@@ -17,7 +17,7 @@ setClass(Class = "bincap"
          , validity = function(object){
            if(length(object@response) != length(object@predicted))
              return("response and predicted must have the same number of observations.")
-           if(any(object@predicted < 0) || any(object@predicted > 1))
+           if(any(object@predicted < 0, na.rm = TRUE) || any(object@predicted > 1, na.rm = TRUE))
              return("probabilities should be in [0,1].")
            if(length(object@true) > 1)
              return("give a single character for the 'true'/'presence' class.")
@@ -34,7 +34,7 @@ setClass(Class = "multcap"
          , validity = function(object){
            if(length(object@response) != nrow(object@predicted))
              return("response and predicted must have the same number of observations.")
-           if(any(object@predicted < 0) || any(object@predicted > 1))
+           if(any(object@predicted < 0, na.rm = TRUE) || any(object@predicted > 1, na.rm = TRUE))
              return("probabilities should be in [0,1].")
 	   if(! all(object@response %in% dimnames(object@predicted)[[2]]))
 	     return("mismatch of all(object@response %in% dimnames(object@predicted)[[2]])")

@@ -1,6 +1,7 @@
-29e8bbe7c415e20de8b2c50c11b8c80f *DESCRIPTION
+9c249c953884424c17ecc543e8edeb90 *ChangeLog
+00bdbc8d2f92d29566a1b5c339da889b *DESCRIPTION
 f37093a743d3437149981219a05ee9c6 *NAMESPACE
-c5068850b6c23c7c1707a11d607350bb *R/AllClasses.R
+d8f53475d63358a9d98d3742f3938bdc *R/AllClasses.R
 add8f6b47d473759f9c3cfb4f6333048 *R/AllConstructors.R
 470e68c089376c90f3759ebda734d779 *R/AllGenerics.R
 806781146305e1fccf2fd70bb1943a1f *R/auc-methods.R
@@ -8,8 +9,8 @@ c62343d9b04f74be0d6291f3bbe1bc54 *data/ht01.multipleclass.txt.gz
 9d7d7b90e27e8bcb1461f5a088fd5f44 *data/ht01.twoclass.txt.gz
 c157d72517d0efcc2c2f2e4aaebfa428 *demo/00Index
 3086f118d40a96d41b851285400ff9ca *demo/auc.R
-ad9cd317deccf9be5ae22d10bbcaa22e *inst/doc/consensus_auc.Rnw
-0afee8ea8dec91c815de08d17a56eb73 *inst/doc/consensus_auc.pdf
+ad89241e9bb8bf2f71be9ec7d69847d4 *inst/doc/consensus_auc.Rnw
+f856c0c2c5e0c4e5e44afff8a2ba033e *inst/doc/consensus_auc.pdf
 ca550e779aa2b9ce1542be4b61224818 *man/HandTill2001-package.Rd
 c883e047c62f23e7125984728a3fdfa7 *man/auc-methods.Rd
 4eab299781c1c5bb99f0e83c0f3eec40 *man/bincap-class.Rd
@@ -20,7 +21,7 @@ d771f1733b3477098437aacd238cc0b1 *man/ht01.twoclass.Rd
 c01ebbddec8ebf733e73f6cd4b35dfe7 *man/multcap-class.Rd
 c39f829a87f095bfcfdb53c0fe79cbc5 *man/multcap.Rd
 3086f118d40a96d41b851285400ff9ca *tests/auc.R
-e4cd327808c9b88fa0e1e1e850044a6d *tests/constructors.R
+6c98cbc2de58ebe08626209dfe53a12e *tests/constructors.R
 b8bc40688cca53acc6bf2392d8a63597 *vignettes/Makefile
 ae253de72be34bae6e4646916cae34f0 *vignettes/bibliography.bib
-ad9cd317deccf9be5ae22d10bbcaa22e *vignettes/consensus_auc.Rnw
+ad89241e9bb8bf2f71be9ec7d69847d4 *vignettes/consensus_auc.Rnw
