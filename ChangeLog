@@ -1,0 +1,9 @@
+2013-01-04  Andreas Dominik Cullmann  <acullma@gwdg.de>
+
+	* vignettes/consensus_auc.R: class predictions added
+
+2012-12-26  Andreas Dominik Cullmann  <acullma@gwdg.de>
+
+	* tests/constructors.R: examples added
+	* R/AllClasses.R (multcap, bincap) <validitiy>: capture NA
+	* ChangeLog: ChangeLog added
