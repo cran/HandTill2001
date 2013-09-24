@@ -1,9 +1,6 @@
-exportPattern("^[[:alpha:]]+")
-exportMethods(
-    "auc" 
-)
-exportClasses(
-    "bincap",
-     "cap",
-     "multcap" 
-)
+export(bincap)
+exportClasses(bincap)
+exportClasses(cap)
+exportClasses(multcap)
+exportMethods(auc)
+export(multcap)

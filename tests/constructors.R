@@ -7,6 +7,13 @@ assertError <- function(expr) {
     stop(d.expr, "\n\t did not give an error", call. = FALSE)
   invisible(t.res)
 }
+assertWarning <- function(expr) {
+    d.expr <- deparse(substitute(expr))
+    t.res <- tryCatch(expr, warning = function(w)w)
+    if(!inherits(t.res, "warning"))
+	stop(d.expr, "\n\t did not give a warning", call. = FALSE)
+    invisible(t.res)
+}
 
 library(HandTill2001)
 data(ht01.twoclass)
@@ -17,22 +24,22 @@ new("bincap"
 
 
 assertError(
-            new("bincap"
-                , response = ht01.twoclass$observed
-                , predicted = ht01.twoclass$predicted
-                )
-            )
+  new("bincap"
+      , response = ht01.twoclass$observed
+      , predicted = ht01.twoclass$predicted
+      )
+  )
 assertError(
-            new("bincap"
-                , response = as.factor(ht01.twoclass$observed)
-                , predicted = as.data.frame(ht01.twoclass$predicted)
-                )
-            )
+  new("bincap"
+      , response = as.factor(ht01.twoclass$observed)
+      , predicted = as.data.frame(ht01.twoclass$predicted)
+      )
+  )
 assertError(
-            new("bincap"
-                , true = 1
-                )
-            )
+  new("bincap"
+      , true = 1
+      )
+  )
 data(ht01.multipleclass)
 new("multcap"
     , response = ht01.multipleclass$observed
@@ -40,54 +47,71 @@ new("multcap"
     )
 
 assertError(
-            new("multcap"
-                , response = as.numeric(ht01.multipleclass$observed)
-                , predicted = as.matrix(ht01.multipleclass[, levels(ht01.multipleclass$observed)])
-                )
-            )
+  new("multcap"
+      , response = as.numeric(ht01.multipleclass$observed)
+      , predicted = as.matrix(ht01.multipleclass[, levels(ht01.multipleclass$observed)])
+      )
+  )
 assertError(
-            new("multcap"
-                , response = ht01.multipleclass$observed
-                , predicted = ht01.multipleclass[, levels(ht01.multipleclass$observed)]
-                )
-            )
+  new("multcap"
+      , response = ht01.multipleclass$observed
+      , predicted = ht01.multipleclass[, levels(ht01.multipleclass$observed)]
+      )
+  )
 assertError(
-            new("multcap"
-                , true = 1
-                )
-            )
+  new("multcap"
+      , true = 1
+      )
+  )
+###########################################################
 
-### Prediction matrix has a column that doesn't correspond to any of the levels of
-### the factor of observed values. This can happen when predicting a subset of the
-### observed values used for building a model.
-df.sub <- (subset(ht01.multipleclass, observed != "Tabl"))
-p <- df.sub[, ! names(df.sub)  %in%  c("observed")]
-r <- df.sub[, c("observed")]
-str(p)
-str(r)
-new("multcap"
-    , response = r
+po <- ht01.multipleclass[, levels(ht01.multipleclass$observed)]
+ro <- ht01.multipleclass$observed
+######## get a  subset
+i <- c(1,73,157,170,182,186)
+p <- po[i,]
+r <- ro[i]
+multcap(
+  response = r
+  , predicted = as.matrix(p)
+  )
+
+## r extraneous levels
+r <- ro[i]
+p <- po[i,]
+levels(r) <- c(levels(r), "foo", "bar")
+assertWarning(
+  multcap(
+    response = r
     , predicted = as.matrix(p)
     )
-### There is a level in the factor of observed values that does not correspond to
-### any of the columns in the prediction matrix. This is an error although it may
-### happen, for example when building a model using nnet::multinom with a level
-### in the factor of observed values that occures only once.
-p <- ht01.multipleclass[, ! names(ht01.multipleclass)  %in%  c("Con","observed")]
-set.seed(123)
-r <- ht01.multipleclass[sample(nrow(ht01.multipleclass),
-                               size = nrow(p)
-                               , replace = FALSE)
-                        , c("observed")]
-str(p)
-str(r)
-assertError(
-            new("multcap"
-                , response = r
-                , predicted = as.matrix(p)
+)
+## r levels unmatched by p
+r <- ro[i]
+p <- po[i,]
+levels(r) <- c(levels(r), "foo", "bar")
+assertWarning(
+  multcap(
+    response = r
+    , predicted = as.matrix(p)
     )
 )
-
-
-
-
+## r values unmatched by p
+r <- ro[i]
+p <- po[i,1:5]
+assertError(
+  multcap(
+    response = r
+    , predicted = as.matrix(p)
+    )
+  )
+## p columns unmatched by levels(r)
+r <- ro[i]
+p <- po[i,]
+p$foo <- NA
+assertError(
+  multcap(
+    response = r
+    , predicted = as.matrix(p)
+    )
+  )

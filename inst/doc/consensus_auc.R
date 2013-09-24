@@ -1,28 +1,15 @@
-%\VignetteIndexEntry{Consenus models weighted by multiclass AUC}
-\documentclass[a4paper]{article}
-\bibliographystyle{apalike}
-\usepackage[utf8]{inputenc}
-\title{Consensus models weighted by AUC for multiple class responses}
-\author{Andreas Dominik Cullmann}
+### R code from vignette source 'consensus_auc.Rnw'
+### Encoding: UTF-8
 
-\SweaveOpts{echo=FALSE}
-\SweaveOpts{print=FALSE}
-\SweaveOpts{width=60}
-%\VignetteIndexEntry{Consenus models}
-\begin{document}
-\maketitle
-\providecommand{\rpack}[1]{package \texttt{#1}}
-\providecommand{\rdata}[1]{\texttt{#1} data}
-\providecommand{\rcode}[1]{\texttt{#1}}
-\section{Introduction}
-This vignette shows how to build a consensus model for the \rdata{fgl} (see \cite{MASS} or \rcode{?MASS::fgl}).
-We will follow the modelling process shown in \cite[Figure 1]{marmion2009} restricting ourselves to only two 'Single-models': a classification tree and a multinomial log-linear model using \rpack{rpart} and \rpack{nnet}, respectively.
-\section{Example}
-<<echo=false,print=false>>=
+###################################################
+### code chunk number 1: consensus_auc.Rnw:21-22
+###################################################
 options(useFancyQuotes="UTF-8")
-@
-After loading the data, we create random indices for training and evaluation sets (since the training and evaluation sets are complements with respect to the data set, two indices are redundant, but \rcode{fgl[ind.eval, ]} might be easier to read than \rcode{fgl[!ind.train,  ]}).
-<<echo=true>>=
+
+
+###################################################
+### code chunk number 2: consensus_auc.Rnw:25-33
+###################################################
 library(MASS)
 data(fgl)
 set.seed(100)
@@ -31,9 +18,11 @@ ind.train <- sample(nrow(fgl)
                    , replace = FALSE
                    )
 ind.eval <- setdiff(seq(1:nrow(fgl)), ind.train)
-@
-Choosing \rcode{fgl\$type} as response and all other variables as predictors, we calibrate a classification tree using \rcode{rpart::rpart} (cf. \cite[p. 264]{MASS}):
-<<echo=true>>=
+
+
+###################################################
+### code chunk number 3: consensus_auc.Rnw:36-49
+###################################################
 library(rpart)
 set.seed(123)
 fgl.rpart <- rpart(type ~ .
@@ -47,17 +36,21 @@ newcp <- max(fgl.rpart$cptable[,"CP"] *
                                               , c("xerror","xstd")]))
 	     ) + 1e-13
 fgl.rpart.pruned <- prune(fgl.rpart, cp = newcp)
-@
-and a multinomial log-linear model using \rcode{nnet::multinom}:
-<<echo=true>>=
+
+
+###################################################
+### code chunk number 4: consensus_auc.Rnw:52-57
+###################################################
 library(nnet)
 fgl.multinom <- multinom(type ~ .
                             , data = fgl[ind.train, ]
 			    , trace = FALSE
                             )
-@
-We can now assess the model accuracy using either a confusion matrix of the classified predictions
-<<echo=true>>=
+
+
+###################################################
+### code chunk number 5: consensus_auc.Rnw:60-69
+###################################################
 library(mda)
 confusion(predict(fgl.rpart.pruned
 		    , newdata = fgl[ind.eval, ]
@@ -67,9 +60,11 @@ confusion(predict(fgl.multinom
 		    , newdata = fgl[ind.eval, ]
 		    , type = "class") 
 	  , fgl[ind.eval, ]$type)
-@
-or a multiple class version of AUC using the raw predictions:
-<<echo=true>>=
+
+
+###################################################
+### code chunk number 6: consensus_auc.Rnw:72-84
+###################################################
 library(HandTill2001)
 auc(multcap(response = fgl[ind.eval, ]$type
 	     , predicted = predict(fgl.rpart.pruned
@@ -82,20 +77,22 @@ auc(multcap(response = fgl[ind.eval, ]$type
 				   , type = "probs"
 				   )
 	     ))
-@
-To enhance predictive performance, we decide to use both models to build a consenus model.
-Furthermore, we want to use the 'weighted average' consensus method given by \cite[Eqn 1]{marmion2009}, which uses the pre-evaluated AUC of the models as weights.
-So we split the training set into two complementary subsets: 'inner training' and 'inner evaluation'.
-<<echo=true>>=
+
+
+###################################################
+### code chunk number 7: consensus_auc.Rnw:89-95
+###################################################
 set.seed(100)
 ind.inner.train <- sample(ind.train
                          , size = floor(length(ind.train)*0.7)
                          , replace = FALSE
                          )
 ind.inner.eval <- setdiff(ind.train, ind.inner.train)
-@
-We then refit our two models to the 'inner training' data:
-<<echo=true>>=
+
+
+###################################################
+### code chunk number 8: consensus_auc.Rnw:98-112
+###################################################
 wa.fgl.multinom <- multinom(fgl.multinom
                             , data = fgl[ind.inner.train, ]
 			    , trace = FALSE
@@ -110,9 +107,11 @@ newcp <- max(wa.fgl.rpart$cptable[,"CP"] *
                                                 , c("xerror","xstd")]))
              ) + 1e-13
 wa.fgl.rpart.pruned <- prune(wa.fgl.rpart, cp = newcp)
-@
-and calculate pre-evaluation AUC (which we save in a \rcode{list}) using the 'inner evaluation' data and the refitted models:
-<<echo=true>>=
+
+
+###################################################
+### code chunk number 9: consensus_auc.Rnw:115-123
+###################################################
 li <- list()
 li$rpart$auc <- auc(multcap(response = fgl[ind.inner.eval, ]$type
                              , predicted = predict(wa.fgl.rpart.pruned
@@ -121,29 +120,37 @@ li$mllm$auc <- auc(multcap(response = fgl[ind.inner.eval, ]$type
                             , predicted = predict(wa.fgl.multinom
                                 , newdata = fgl[ind.inner.eval, ]
                                 , type = "probs")))
-@
-We add the predictions using the models (the 'original' or 'Single' ones, not the refitted) for the evaluation set
-<<echo=true>>=
+
+
+###################################################
+### code chunk number 10: consensus_auc.Rnw:126-131
+###################################################
 li$rpart$predictions <- predict(fgl.rpart.pruned
                                 , newdata = fgl[ind.eval, ])
 li$mllm$predictions <- predict(fgl.multinom
                                , newdata = fgl[ind.eval, ]
                                , type = "probs")
-@
-and obtain the consensus predictions as (\cite[Eqn 1]{marmion2009})
-<<echo=true>>=
+
+
+###################################################
+### code chunk number 11: consensus_auc.Rnw:134-137
+###################################################
 predicted <- Reduce('+', lapply(li, function(x)
 				x$auc * x$predictions)
 ) / Reduce('+', sapply(li,"[", "auc"))
-@
-which perform (slightly) better than the predictions using the 'single models':
-<<echo=true>>=
+
+
+###################################################
+### code chunk number 12: consensus_auc.Rnw:140-143
+###################################################
 auc(multcap(response = fgl[ind.eval, ]$type
              , predicted = predicted)
      )
-@
-To classify the predicted probabilities, we choose the class with highest predicted probability (which.max gives the \_first\_ maximum):
-<<echo=true>>=
+
+
+###################################################
+### code chunk number 13: consensus_auc.Rnw:146-154
+###################################################
 classes.predicted <-
   factor(x =
          apply(predicted
@@ -152,7 +159,5 @@ classes.predicted <-
                dimnames(predicted)[[2]][which.max(x)])
 	 , levels = levels(fgl[ind.eval, ]$type)	 
          )
-@
 
-\bibliography{bibliography}
-\end{document}
+

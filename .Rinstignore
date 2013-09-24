@@ -1,6 +1,1 @@
-.git
-vignettes/Makefile$
-vignettes/.Rhistory$
-vignettes/local.cl$
-
-
+preformatted.roxygen2.*$
