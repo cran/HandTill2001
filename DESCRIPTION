@@ -1,8 +1,8 @@
 Package: HandTill2001
 Type: Package
 Title: Multiple Class Area under ROC Curve
-Version: 0.2-8
-Date: 2013-03-22
+Version: 0.2-9
+Date: 2013-11-23
 Authors@R: c(person(given = c("Andreas", "Dominik"), family = "Cullmann",
     email = "r-package_handtill2001@arcor.de", role = c("aut","cre"), comment = NULL,
     first = NULL, last = NULL)
@@ -15,10 +15,10 @@ Description: (nothing but) an S4 implementation of Eq. (3) and Eq. (7)
 Depends: R (>= 2.14), methods
 Suggests: MASS, rpart, mda, nnet
 License: GPL (>= 2)
-Packaged: 2013-09-24 19:57:31 UTC; qwer
+Packaged: 2013-11-23 23:17:06 UTC; qwer
 Author: Andreas Dominik Cullmann [aut, cre],
   Edgar Kublin [ctb]
 Maintainer: Andreas Dominik Cullmann <r-package_handtill2001@arcor.de>
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2013-09-24 23:07:28
+Date/Publication: 2013-11-24 01:09:28
