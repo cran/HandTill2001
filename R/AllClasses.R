@@ -1,17 +1,3 @@
-#'Class \code{"cap"} in Package \pkg{HandTill2001}
-#'
-#'A virtual class for \code{"bincap"} and \code{"multcap"}.
-#'
-#'
-#'@name cap-class
-#' @export
-#'@docType class
-#'@section Objects from the Class: A virtual Class: No objects may be created
-#'from it.
-#'@author Andreas Dominik Cullmann
-#'@seealso \code{"\link[=bincap-class]{class?bincap}"},
-#'\code{"\link[=multcap-class]{class?multcap}"}
-#'@keywords classes
 setClass(Class = "cap"
 	 , representation = representation(
 					   response = "factor"
@@ -22,34 +8,6 @@ setClass(Class = "cap"
 	 }
 	 )
 
-#'Class \code{"bincap"} in Package \pkg{HandTill2001}
-#'
-#'S4 class for a two class response and corresponding (predicted)
-#'probabilities.
-#'
-#'
-#'@name bincap-class
-#' @export
-#'@docType class
-#'@note No defaults are set. Especially, you have to explicitly initialize
-#'\code{true}, there is no trying to guess it from the \code{levels} of
-#'\code{response}.
-#'@section Objects from the Class: Objects can be created by calls of the form
-#'\code{new("bincap", ...)}. They are used to store a two class response (one
-#'of the two \code{levels} of which is supposed to be \code{true}), the
-#'information which of the two \code{levels} of the two class response is
-#'thought of as 'true'/'positive'/'present' (the other one would then be
-#'thought of as 'false'/'negative'/'absence') and the predicted probabilities
-#'that \code{response} is \code{true}.
-#'@author Andreas Dominik Cullmann
-#'@seealso \code{"\link[=cap-class]{class?cap}"} ,
-#'\code{"\link[=multcap-class]{class?multcap}"} ,
-#'\code{"\link[=bincap]{?bincap}"}
-#'@keywords classes
-#'@examples
-#'
-#'showClass("bincap")
-#'
 setClass(Class = "bincap"
 	 , contains = "cap"
 	 , representation = representation(
@@ -66,29 +24,10 @@ setClass(Class = "bincap"
 	     return("give a single character for the 'true'/'presence' class.")
 	   if(length(levels(object@response)) > 2)
 	     return("response has to be a two class factor.")
+	   if(! object@true %in% levels(object@response))
+	     message(paste("true = ", object@true, " is not in levels of 'response'", levels(object@response),"."))
 	 }
 	 )
-#'Class \code{"multcap"} in Package \pkg{HandTill2001}
-#'
-#'S4 class for a multiple class response and corresponding (predicted)
-#'probabilities.
-#'
-#'
-#'@name multcap-class
-#' @export
-#'@docType class
-#'@section Objects from the Class: Objects can be created by calls of the form
-#'\code{new("multcap", ...)}. They are used to store a multiple class response
-#'and the predicted probabilities for each of the \code{levels(response)}.
-#'@author Andreas Dominik Cullmann
-#'@seealso \code{"\link[=cap-class]{class?cap}"} ,
-#'\code{"\link[=bincap-class]{class?bincap}"} ,
-#'\code{"\link[=multcap]{?multcap}"}
-#'@keywords classes
-#'@examples
-#'
-#'showClass("multcap")
-#'
 setClass(Class = "multcap"
 	 , contains = "cap"
 	 , representation = representation(
@@ -96,9 +35,9 @@ setClass(Class = "multcap"
 					   )
 	 , prototype = prototype(predicted = matrix(nrow = 0, ncol = 0))
 	 , validity = function(object){
-	   p <- object@predicted 
+	   p <- object@predicted
 	   r <- object@response
-	   if(! isTRUE(all.equal(as.character(unique(r)), levels(r))))
+	   if(! isTRUE(all.equal(sort(as.character(unique(r))), sort(levels(r)))))
 	     warning(paste("found extraneous factor level(s) '"
 			   , paste(setdiff(levels(r),as.character(unique(r))), collapse=', ')
 			   ,"' of response.\n"
