@@ -24,8 +24,6 @@ setClass(Class = "bincap"
 	     return("give a single character for the 'true'/'presence' class.")
 	   if(length(levels(object@response)) > 2)
 	     return("response has to be a two class factor.")
-	   if(! object@true %in% levels(object@response))
-	     message(paste("true = ", object@true, " is not in levels of 'response'", levels(object@response),"."))
 	 }
 	 )
 setClass(Class = "multcap"

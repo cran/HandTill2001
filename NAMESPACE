@@ -4,3 +4,6 @@ exportClasses(cap)
 exportClasses(multcap)
 exportMethods(auc)
 export(multcap)
+import(methods)
+import(utils)
+

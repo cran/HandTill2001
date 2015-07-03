@@ -8,32 +8,21 @@ assertError <- function(expr) {
   invisible(t.res)
 }
 assertWarning <- function(expr) {
-  d.expr <- deparse(substitute(expr))
-  t.res <- tryCatch(expr, warning = function(w)w)
-  if(!inherits(t.res, "warning"))
-    stop(d.expr, "\n\t did not give a warning", call. = FALSE)
-  invisible(t.res)
+    d.expr <- deparse(substitute(expr))
+    t.res <- tryCatch(expr, warning = function(w)w)
+    if(!inherits(t.res, "warning"))
+	stop(d.expr, "\n\t did not give a warning", call. = FALSE)
+    invisible(t.res)
 }
 
 library(HandTill2001)
 data(ht01.twoclass)
-## assertError(
-##   auc(
-##     new("bincap"
-##         , response = as.factor(ht01.twoclass$observed)
-##         , predicted = ht01.twoclass$predicted
-##         )
-##     )
-##   )
-## assertError(
-##   auc(
-##     new("bincap"
-##         , response = as.factor(ht01.twoclass$observed)
-##         , predicted = ht01.twoclass$predicted
-##         , true = '2'
-##         )
-##     )
-##   )
+new("bincap"
+    , response = as.factor(ht01.twoclass$observed)
+    , predicted = ht01.twoclass$predicted
+    )
+
+
 assertError(
   new("bincap"
       , response = ht01.twoclass$observed
@@ -96,7 +85,7 @@ assertWarning(
     response = r
     , predicted = as.matrix(p)
     )
-  )
+)
 ## r levels unmatched by p
 r <- ro[i]
 p <- po[i,]
@@ -106,7 +95,7 @@ assertWarning(
     response = r
     , predicted = as.matrix(p)
     )
-  )
+)
 ## r values unmatched by p
 r <- ro[i]
 p <- po[i,1:5]
