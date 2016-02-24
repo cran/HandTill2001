@@ -1,5 +1,4 @@
-da90267e586cd78972e713bb03449b8e *ChangeLog
-34439810e37b73d219916899d03e92bf *DESCRIPTION
+000fee22342aa23354d1b17d445c4877 *DESCRIPTION
 1838938b2eb8429b9b2b2fc1a31ee8f6 *NAMESPACE
 15f292728ee709ff36a93520237c587c *R/AllClasses.R
 aecea98654c2936232d775d9c9c0c3fc *R/AllConstructors.R
@@ -12,10 +11,10 @@ c62343d9b04f74be0d6291f3bbe1bc54 *data/ht01.multipleclass.txt.gz
 3086f118d40a96d41b851285400ff9ca *demo/auc.R
 f5384d3d1c9b562031ea3034db93ea81 *inst/doc/consensus_auc.R
 365d5282084b175f143c558f0d39e868 *inst/doc/consensus_auc.Rnw
-5c28b4ef7342bb9f10734e49cb448654 *inst/doc/consensus_auc.pdf
+4dc16675fc297a8b4e4a7a1e3bc26737 *inst/doc/consensus_auc.pdf
 59b8e98afb3a55bcf70647fc668b9bc1 *inst/preformatted.roxygen2/preformatted.sh
 ce2b75491a4df02e2a00270718ba40a0 *inst/preformatted.roxygen2/readme
-29204bedb1465436ad7fb7c5012bf54a *man/HandTill2001-package.Rd
+6a5edd90ff3cff9be46ecea2bb939ec3 *man/HandTill2001-package.Rd
 c883e047c62f23e7125984728a3fdfa7 *man/auc-methods.Rd
 4eab299781c1c5bb99f0e83c0f3eec40 *man/bincap-class.Rd
 5a909f96994d6dcfe79e63fa56c4d5db *man/bincap.Rd
@@ -26,6 +25,5 @@ c01ebbddec8ebf733e73f6cd4b35dfe7 *man/multcap-class.Rd
 c39f829a87f095bfcfdb53c0fe79cbc5 *man/multcap.Rd
 3086f118d40a96d41b851285400ff9ca *tests/auc.R
 41768905efad920ba2b00d840c5f51c9 *tests/constructors.R
-b8bc40688cca53acc6bf2392d8a63597 *vignettes/Makefile
 ae253de72be34bae6e4646916cae34f0 *vignettes/bibliography.bib
 365d5282084b175f143c558f0d39e868 *vignettes/consensus_auc.Rnw
