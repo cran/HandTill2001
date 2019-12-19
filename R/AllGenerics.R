@@ -1,4 +1,6 @@
-setGeneric(name = "auc"
-            , def = function(object){standardGeneric("auc")}
-            )
-
+setGeneric(
+  name = "auc",
+  def = function(object) {
+    standardGeneric("auc")
+  }
+)
