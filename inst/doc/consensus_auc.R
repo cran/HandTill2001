@@ -1,5 +1,4 @@
 ### R code from vignette source 'consensus_auc.Rnw'
-### Encoding: UTF-8
 
 ###################################################
 ### code chunk number 1: consensus_auc.Rnw:20-21

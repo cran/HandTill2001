@@ -4,9 +4,11 @@
 \name{ht01.twoclass}
 \alias{ht01.twoclass}
 \title{Example Data for Binary Classes}
-\format{A data frame with 189 observations on the following 2 variables.
+\format{
+A data frame with 189 observations on the following 2 variables.
 \describe{ \item{observed}{a numeric vector}
-\item{predicted}{a numeric vector} }}
+\item{predicted}{a numeric vector} }
+}
 \source{
 \preformatted{ ## From: A binary class data example Venables and
 Ripley pp. 194--199 library(MASS); data("birthwt"); attach(birthwt) race <-

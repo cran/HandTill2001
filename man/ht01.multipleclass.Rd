@@ -4,7 +4,8 @@
 \name{ht01.multipleclass}
 \alias{ht01.multipleclass}
 \title{Example Data for Multiple Classes}
-\format{A data frame with 214 observations on the following 7 variables.
+\format{
+A data frame with 214 observations on the following 7 variables.
 \describe{
  \item{observed}{a factor with levels
                    \code{Con} \code{Head} \code{Tabl} \code{Veh}
@@ -15,7 +16,8 @@
  \item{Con}{a numeric vector}
  \item{Tabl}{a numeric vector}
  \item{Head}{a numeric vector}
-}}
+}
+}
 \source{
 \preformatted{ ## From: Forensic glass example Venables and Ripley
 (2002) pp. 261--265 library(MASS);library(rpart);data(fgl);set.seed(123)
