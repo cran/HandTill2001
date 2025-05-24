@@ -29,13 +29,17 @@ auc(
 Generalisation of the Area Under the ROC Curve for Multiple Class
 Classification Problems. \emph{Machine Learning} \bold{45}(2), p. 171--186.
 DOI:
-\href{http://dx.doi.org/10.1023/A:1010920819831}{10.1023/A:1010920819831}}.
+\doi{10.1023/A:1010920819831}}.
 }
 \seealso{
 \code{help(package="HandTill2001")}, especially
 \code{\link[=auc-methods]{?HandTill2001::auc}}; various packages that calculate
 binary class AUC (\code{\link[ROCR:performance]{ROCR}}) or multiple class AUC
 (pROC, \code{\link[caTools:caTools-package]{caTools}}).
+}
+\author{
+\strong{Maintainer}: Andreas Dominik Cullmann \email{fvafrcu@mailbox.org}
+
 }
 \keyword{AUC}
 \keyword{ROC}

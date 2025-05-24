@@ -1,3 +1,7 @@
+# HandTill2001 1.0.2
+
+* Fix URL with `\doi` as reported by CRAN.
+
 # HandTill2001 1.0.1
 
 * Added `ROCR` and `caTools` to the Suggests-Field in file DESCRIPTION.

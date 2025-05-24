@@ -17,7 +17,7 @@
 #' Generalisation of the Area Under the ROC Curve for Multiple Class
 #' Classification Problems. \emph{Machine Learning} \bold{45}(2), p. 171--186.
 #' DOI:
-#' \href{http://dx.doi.org/10.1023/A:1010920819831}{10.1023/A:1010920819831}}.
+#' \doi{10.1023/A:1010920819831}}.
 #' @keywords AUC ROC
 #' @examples
 #'
